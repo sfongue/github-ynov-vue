@@ -20,12 +20,12 @@
       <div class="container">
         <div class="row">
           <select v-model="selectedUser">
-            <option selected>Choisir compte</option>
+            <option selected value="">Choisir un compte</option>
             <option v-for="user in users" v-bind:value="user">{{ user }}</option>
           </select>
-          <select v-on:click="getProjects(selectedUser)">
-            <option selected>Choisir projet</option>
-            <option v-for="result in results">{{ result.name }}</option>
+          <select v-model="selectedProject">
+            <option selected value="">Choisir un projet</option>
+            <option v-for="project in projects"  v-bind:value="project">{{ project }}</option>
           </select>
           <div class="choice-period col-sm-3 col-xl-2">Choix période</div>
         </div>

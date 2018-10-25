@@ -28,56 +28,61 @@ var config = loadJSON("config.json");
 var listUsers = [];
 config.users.forEach(user => {
   listUsers.push(user);
-  // console.log(user);
 })
-// console.log(listUsers);
+
+// Create an array of projects
+var listProjects = [];
+config.projects.forEach(project => {
+  listProjects.push(project);
+})
 
 const app = new Vue({
   el: '#app',
   data: {
     results: [],
     users: [],
+    projects: [],
     selectedUser: '',
+    selectedProject: ''
   },
   methods: {
-    getProjectsUsers(user) {
+    getProjects() {
       // Create a request variable and assign a new XMLHttpRequest object to it.
       var request = new XMLHttpRequest();
 
       var results = [];
       // console.log('https://api.github.com/users/'+user+'/repos');
-      request.open('GET', 'https://api.github.com/users/' + user, true);
-      request.setRequestHeader("Authorization", "token " + config.token);
+      // request.open('GET', 'https://api.github.com/users/sfongue', true);
+      config.users.forEach(user => {
+        request.open('GET', 'https://api.github.com/users/' + user + '/repos', true);
+        request.setRequestHeader("Authorization", "token " + config.token);
 
-      request.onload = function () {
-        var data = JSON.parse(this.response);
-        console.log(data);
-        if (request.status >= 200 && request.status < 400) {
-          data.forEach(repos => {
-            results.push(
-              { 
-                "name" : repos.name, 
-                "user" : repos.owner.login, 
-                "url" : repos.html_url 
-              }
-            );
-            console.log(results);
-          });
-        } else {
-          console.log(error);
+        request.onload = function () {
+          var dataUser = JSON.parse(this.response);
+          if (request.status >= 200 && request.status < 400) {
+            dataUser.forEach(repos => {
+              results.push(
+                { 
+                  "name" : repos.name,
+                  "url" : repos.html_url 
+                }
+              );
+            });
+          } else {
+            console.log(error);
+          }
         }
-      }
-      // Send request
-      request.send();
-      console.log(results)
+        // Send request
+        request.send();
+        console.log(results);
+      })
     },
     getCommits(repo) {
-
     }
   },
   mounted() {
-    this.users = listUsers
-  }
+    this.users = listUsers,
+    this.projects = listProjects
+  },
 }
 )
-

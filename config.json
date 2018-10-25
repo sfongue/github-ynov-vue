@@ -1,4 +1,5 @@
 {
   "users" : [ "Killy85", "Mokui", "LordInateur", "gfourny", "ClementCaillaud", "sfongue", "BenoitCochet", "Nair0fl", "raphaelCharre", "mathiasLoiret", "thomaspich", "TeofiloJ" ,"Grigusky" ,"mael61" ,"Dakistos", "KevinPautonnier", "alixnzt", "benjaminbra", "rudy8530", "AlexDesvallees", "Coblestone", "etienneYnov", "AntoineGOSSET" ],
-  "token" :  // Put your github token
+  "token" :  "yourKey", // Enter your github token
+  "projects" : [ "github-ynov-vue", "gta-ynov-vue" ]
 }
