@@ -19,19 +19,39 @@
       <!-- Fichier json -->
       <div class="container">
         <div class="row">
-          <select v-model="selectedUser">
+          <select v-model="selectedUser" class="col-3">
             <option selected value="">Choisir un compte</option>
             <option v-for="user in users" v-bind:value="user">{{ user }}</option>
           </select>
-          <select v-model="selectedProject">
+          <select v-model="selectedProject" class="col-3">
             <option selected value="">Choisir un projet</option>
             <option v-for="project in projects"  v-bind:value="project">{{ project }}</option>
           </select>
-          <div class="choice-period col-sm-3 col-xl-2">Choix période</div>
+          <div class="choice-period col-3">
+            <span>Date de début</span>
+            <input type="date" v-model="dateSince">
+            <span>Date de fin</span>
+            <input type="date" v-model="dateUntil">
+          </div>
         </div>
      
-        <button>Valider</button>
+        <button v-on:click="getProject()">Valider</button>
       </div>
+      <div v-if="isDisplay">test</div>
+      <div class="container" v-if="isDisplay">
+        <div class="row">
+          <div class="col-sm col-3">Auteur</div>
+          <div class="col-sm col-3">Message</div>
+          <div class="col-sm col-3">Date</div>
+        </div>
+        <div class="row" v-for="commit in commits">
+            <div class="col-sm">{{commit.author}}</div>
+            <div class="col-sm">{{commit.message}}</div>
+            <div class="col-sm">{{commit.date}}</div>
+        </div>
+
+      </div>
+      <div v-else></div>
     </div>
     <script type="text/javascript" src="config.json"></script>
     <script type="text/javascript" src="script.js"></script>
