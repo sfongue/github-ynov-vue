@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>title</title>
+    <link href="./css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    
+    <div id="app">
+      <div class="title">
+        <h3>Application Github Ynov</h3>
+      </div>
+      
+      <!-- Fichier json -->
+      <div class="container">
+        <div class="row">
+          <select v-model="selectedUser">
+            <option selected>Choisir compte</option>
+            <option v-for="user in users" v-bind:value="user">{{ user }}</option>
+          </select>
+          <select v-on:click="getProjects(selectedUser)">
+            <option selected>Choisir projet</option>
+            <option v-for="result in results">{{ result.name }}</option>
+          </select>
+          <div class="choice-period col-sm-3 col-xl-2">Choix période</div>
+        </div>
+     
+        <button>Valider</button>
+      </div>
+    </div>
+    <script type="text/javascript" src="config.json"></script>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>
