@@ -89,7 +89,7 @@ const app = new Vue({
       // console.log('https://api.github.com/repos/' + this.selectedUser + '/' + this.selectedProject + "/commits", true);
       // request.open('GET', 'https://api.github.com/repos/sfongue/github-ynov-vue', true);
       // console.log('https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject, true);
-      request.open('GET', 'https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject + "/commits", true);
+      request.open('GET', 'https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject + "/commits?since=" + this.dateSince + "T00:00:00Z&until=" + this.dateUntil + "T23:59:59Z", true);
       request.setRequestHeader("Authorization", "token " + config.token);
 
       request.onload = function () {

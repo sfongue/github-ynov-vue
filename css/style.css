@@ -2,7 +2,45 @@
   width: 100%;
   background-color: #42b983;
   height: 80px;
-  display: table;
   text-align: center;
-  vertical-align: middle;
+  padding-top: 20px;
+}
+
+.nameProject {
+  width: 100%;
+}
+
+.filters {
+  margin: 2em;
+}
+
+.row {
+  display: inline-block;
+}
+
+.author {
+  display: inline;
+}
+
+.message {
+  display: inline;
+}
+
+.date {
+  display: inline;
+}
+
+.nameProject {
+  background-color: #42b983;
+  text-align: center;
+}
+
+.test {
+  display: inline-block;
+}
+
+@media screen and (max-width: 768px) {
+  .chooseUser, .chooseProject, .choosePeriod .date, .divValider {
+    margin-bottom: 1em;
+  }
 }
