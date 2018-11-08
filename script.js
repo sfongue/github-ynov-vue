@@ -46,6 +46,7 @@ const app = new Vue({
     projects: [],
     commits: null,
     selectedUser: '',
+    checkedUsers: [],
     selectedProject: '',
     dateSince: '',
     dateUntil: '',
@@ -57,39 +58,41 @@ const app = new Vue({
       var request = new XMLHttpRequest();
 
       var results = [];
-      
-      // console.log('https://api.github.com/repos/' + this.selectedUser + '/' + this.selectedProject, true);
-      request.open('GET', 'https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject, true);
-      request.setRequestHeader("Authorization", "token " + config.token);
+      this.checkedUsers.forEach(user => {
+        request.open('GET', 'https://api.github.com/repos/' + user + "/" + this.selectedProject, true);    
+        console.log(user);  
+      // request.open('GET', 'https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject, true);
+        request.setRequestHeader("Authorization", "token " + config.token);
 
-      request.onload = function () {
-        var dataUser = JSON.parse(this.response);
-        // console.log(dataUser);
-        if (request.status >= 200 && request.status < 400) {
-          results.push(
-            { 
-              "name" : dataUser.name,
-              "html_url" : dataUser.html_url,
-              "url" : dataUser.url
-            }
-          );
-        } else {
-          console.log(error);
+        request.onload = function () {
+          var dataUser = JSON.parse(this.response);
+          // console.log(dataUser);
+          if (request.status >= 200 && request.status < 400) {
+            results.push(
+              { 
+                "name" : dataUser.name,
+                "html_url" : dataUser.html_url,
+                "url" : dataUser.url
+              }
+            );
+          } else {
+            console.log(error);
+          }
         }
-      }
-      // Send request
-      request.send();
-      this.getCommits();
+        // Send request
+        request.send();
+        this.getCommits(user);
+      });
     },
     // Function to get all the commits on a project and return an array
-    getCommits() {
+    getCommits(username) {
       // Create a request variable and assign a new XMLHttpRequest object to it.
       var request = new XMLHttpRequest();
 
       // console.log('https://api.github.com/repos/' + this.selectedUser + '/' + this.selectedProject + "/commits", true);
-      // request.open('GET', 'https://api.github.com/repos/sfongue/github-ynov-vue', true);
+      // request.open('GET', 'https://api.github.com/repos/sfongue/github-ynov-vue/commits', true);
       // console.log('https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject, true);
-      request.open('GET', 'https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject + "/commits?since=" + this.dateSince + "T00:00:00Z&until=" + this.dateUntil + "T23:59:59Z", true);
+      request.open('GET', 'https://api.github.com/repos/' + username + "/" + this.selectedProject + "/commits?since=" + this.dateSince + "T00:00:00Z&until=" + this.dateUntil + "T23:59:59Z", true);
       request.setRequestHeader("Authorization", "token " + config.token);
 
       request.onload = function () {
@@ -98,8 +101,8 @@ const app = new Vue({
           dataCommits.forEach(aCommit => {
             listCommits.push(
               { 
-                "author": aCommit.commit.committer.name,
-                "date": aCommit.commit.committer.date,
+                "author": aCommit.commit.author.name,
+                "date": aCommit.commit.author.date,
                 "message": aCommit.commit.message
               } 
             );
@@ -110,11 +113,15 @@ const app = new Vue({
       }
       // Send request
       request.send();
-      console.log("list :" ,listCommits);
+      // console.log("list :" ,listCommits);
       this.show();
+      this.reload();
     },
     show() {
       this.isDisplay = true;
+    },
+    reload() {
+      
     }
   },
   mounted() {

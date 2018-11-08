@@ -6,28 +6,8 @@
   padding-top: 20px;
 }
 
-.nameProject {
-  width: 100%;
-}
-
 .filters {
   margin: 2em;
-}
-
-.row {
-  display: inline-block;
-}
-
-.author {
-  display: inline;
-}
-
-.message {
-  display: inline;
-}
-
-.date {
-  display: inline;
 }
 
 .nameProject {
@@ -39,8 +19,39 @@
   display: inline-block;
 }
 
+.historic {
+  word-wrap: break-word;
+}
+
+.checkboxUser {
+  margin-right: 0.5em;
+  margin-left: 0.2em;
+}
+
+.divValider {
+  text-align: center;
+  margin-top: 1em;
+}
+
+/* Medium device */ 
+@media (min-width: 768px) and (max-width: 991.98px)  {
+  .chooseUser, .chooseProject, .choosePeriod .date, .divValider {
+    text-align: center;
+    margin-bottom: 1em;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .chooseUser, .chooseProject, .choosePeriod .date, .divValider {
     margin-bottom: 1em;
+    text-align: center;
+  }
+
+  .title {
+    height: 100px;
+  }
+  
+  .historic {
+    text-overflow: ellipsis;
   }
 }

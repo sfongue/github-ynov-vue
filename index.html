@@ -17,41 +17,54 @@
       <!-- Fichier json -->
       <div class="container filters">
         <div class="row">
-          <div class="chooseUser col-sm-12 col-md-2">
+          <!-- <div class="chooseUser col-sm-12 col-md-6 col-lg-3">
             <select v-model="selectedUser">
               <option selected value="">Choisir un compte</option>
               <option v-for="user in users" v-bind:value="user">{{ user }}</option>
             </select>
+          </div> -->
+          <div class="chooseUser col-sm-12 col-md-6 col-lg-3">
+            <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+              <span>Choisir les comptes</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li v-for="user in users">
+                <input type="checkbox" class="checkboxUser" v-bind:id="user" v-bind:value="user" v-model="checkedUsers">
+                <label for="user">{{ user }}</label>
+              </li>
+            </ul>
           </div>
-          <div class="chooseProject col-sm-12 col-md-3">
+          <div class="chooseProject col-sm-12 col-md-6 col-lg-3">
             <select v-model="selectedProject">
               <option selected value="">Choisir un projet</option>
-              <option v-for="project in projects"  v-bind:value="project">{{ project }}</option>
+              <option v-for="project in projects" v-bind:value="project">{{ project }}</option>
             </select>
           </div>
-          <div class="choosePeriod col-sm-12 col-md-6">
+          <div class="choosePeriod col-sm-12 col-md-12 col-lg-6">
             <div class="row">
-            <div class="date col-md-6">
-              <span class="">Date de début</span>
-              <input class="" type="date" v-model="dateSince">
-            </div>
-            <div class="date col-sm-12 col-md-6">
-              <span>Date de fin</span>
-              <input type="date" v-model="dateUntil">
+              <div class="date col-md-6">
+                <span>Début</span>
+                <input type="date" v-model="dateSince">
+              </div>
+              <div class="date col-sm-12 col-md-6">
+                <span>Fin</span>
+                <input type="date" v-model="dateUntil">
+              </div>
             </div>
           </div>
-          </div>
-          <div class="divValider col-sm-12 col-md-1">
-            <button v-on:click="getProject()">Valider</button>
+        </div>
+        <div class="row">
+          <div class="divValider col-sm-12 col-md-12 col-12">
+            <button id="buttonValidate" v-on:click="getProject()">Valider</button>
           </div>
         </div>
       </div>
-      <div class="container " v-if="isDisplay">
-        <div class="row nameProject col-12 border">{{ selectedProject }}</div>
+      <div class="container table-commits" v-if="isDisplay">
+        <div class="row nameProject col-12">{{ selectedProject }}</div>
         <div class="row border" v-for="commit in commits">
-          <div class="author col-3">{{commit.author}}</div>
-          <div class="message col-6">{{commit.message}}</div>
-          <div class="date col-3">{{commit.date}}</div>
+          <div class="author col-sm-3 col-3 border-right">{{commit.author}}</div>
+          <div class="message col-sm-6 col-6 border-right">{{commit.message}}</div>
+          <div class="historic col-sm-3 col-3">{{commit.date}}</div>
         </div>
       </div>
       <div v-else></div>
