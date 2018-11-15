@@ -92,7 +92,6 @@ const app = new Vue({
               }
             );
           })
-          // listCommits.push({"commit":dataCommits.commit, "message":dataCommits.message});
         } else {
           console.log(error);
         }
@@ -101,9 +100,6 @@ const app = new Vue({
       console.log("commit:", listCommits)
       request.send();
       
-      this.show();
-    },
-    show() {
       this.isDisplay = true;
     },
     getReadme(username, repo) {
