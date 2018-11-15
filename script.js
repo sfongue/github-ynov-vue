@@ -37,14 +37,15 @@ config.projects.forEach(project => {
 })
 
 var listCommits = [];
+var listReadme = [];
+var listData = [];
 
 const app = new Vue({
   el: '#app',
   data: {
-    results: [],
     users: [],
     projects: [],
-    commits: null,
+    info: [],
     selectedUser: '',
     checkedUsers: [],
     selectedProject: '',
@@ -53,81 +54,84 @@ const app = new Vue({
     isDisplay: false
   },
   methods: {
-    getProject() {
+    getData() {
       // Create a request variable and assign a new XMLHttpRequest object to it.
-      var request = new XMLHttpRequest();
-
-      var results = [];
       this.checkedUsers.forEach(user => {
-        request.open('GET', 'https://api.github.com/repos/' + user + "/" + this.selectedProject, true);    
-        console.log(user);  
-      // request.open('GET', 'https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject, true);
-        request.setRequestHeader("Authorization", "token " + config.token);
-
-        request.onload = function () {
-          var dataUser = JSON.parse(this.response);
-          // console.log(dataUser);
-          if (request.status >= 200 && request.status < 400) {
-            results.push(
-              { 
-                "name" : dataUser.name,
-                "html_url" : dataUser.html_url,
-                "url" : dataUser.url
-              }
-            );
-          } else {
-            console.log(error);
-          }
-        }
-        // Send request
-        request.send();
         this.getCommits(user);
-      });
+        this.getReadme(user, this.selectedProject);
+        listData = [];
+        listData.push(
+          {
+            "author": user,
+            "commits": listCommits,
+            "readme": listReadme
+          })
+        this.info.push(listData);
+        }
+      );
+      
+
     },
     // Function to get all the commits on a project and return an array
     getCommits(username) {
       // Create a request variable and assign a new XMLHttpRequest object to it.
       var request = new XMLHttpRequest();
-
-      // console.log('https://api.github.com/repos/' + this.selectedUser + '/' + this.selectedProject + "/commits", true);
-      // request.open('GET', 'https://api.github.com/repos/sfongue/github-ynov-vue/commits', true);
-      // console.log('https://api.github.com/repos/' + this.selectedUser + "/" + this.selectedProject, true);
       request.open('GET', 'https://api.github.com/repos/' + username + "/" + this.selectedProject + "/commits?since=" + this.dateSince + "T00:00:00Z&until=" + this.dateUntil + "T23:59:59Z", true);
       request.setRequestHeader("Authorization", "token " + config.token);
-
+      listCommits = [];
       request.onload = function () {
-        var dataCommits = JSON.parse(this.response);
-        if (request.status >= 200 && request.status < 400) {
+        if (request.status >= 200) {
+          var dataCommits = JSON.parse(this.response);
+          console.log(JSON.parse(this.response))
           dataCommits.forEach(aCommit => {
             listCommits.push(
               { 
                 "author": aCommit.commit.author.name,
                 "date": aCommit.commit.author.date,
                 "message": aCommit.commit.message
-              } 
+              }
             );
           })
+          // listCommits.push({"commit":dataCommits.commit, "message":dataCommits.message});
+        } else {
+          console.log(error);
+        }
+      }
+      // Send request
+      console.log("commit:", listCommits)
+      request.send();
+      
+      this.show();
+    },
+    show() {
+      this.isDisplay = true;
+    },
+    getReadme(username, repo) {
+      var request = new XMLHttpRequest();
+      request.open('GET', 'https://api.github.com/repos/' + username + "/" + repo + "/readme", false);    
+      request.setRequestHeader("Authorization", "token " + config.token);
+      listReadme = [];
+      request.onload = function () {
+        var dataReadme = JSON.parse(this.response);
+        
+        if (request.status >= 200) {
+          listReadme.push(
+            { 
+              "author" : username,
+              "html_url" : dataReadme.html_url,
+            }
+          );
         } else {
           console.log(error);
         }
       }
       // Send request
       request.send();
-      // console.log("list :" ,listCommits);
-      this.show();
-      this.reload();
-    },
-    show() {
-      this.isDisplay = true;
-    },
-    reload() {
-      
     }
   },
   mounted() {
     this.users = listUsers,
-    this.projects = listProjects,
-    this.commits = listCommits
+    this.projects = listProjects
   },
 }
 )
